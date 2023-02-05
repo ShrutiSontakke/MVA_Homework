@@ -16,7 +16,7 @@ survived
 notsurvived <- subset(sparr, Survivorship == 'NS')
 notsurvived
 
-#Calculating colMeans
+#Calculating colMeans for survied and not-survived
 survived.num <- survived[,-1]
 colMeans(survived.num)
 
