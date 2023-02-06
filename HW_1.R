@@ -1,5 +1,5 @@
 ---
-  title: "Vector_And_Matrix"
+  title: "Vector_And_Matrix Homework1"
 author: "ss4230@scarletmail.rutgers.edu"
 date: "02/05/2023"
 output: html_document
