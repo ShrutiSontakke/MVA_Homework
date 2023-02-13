@@ -1,0 +1,88 @@
+---
+  title: "Scatterplot and ggplot"
+author: "ss4230@scarletmail.rutgers.edu"
+date: "02/11/2023"
+output: html_document
+---
+  library(readr)
+Bumpus_sparrows <- read_csv("C:\Users\Shruti Sontakke\Downloads\Bumpus_sparrows.csv")
+Bumpus_sparrows
+sparrows <- Bumpus_sparrows
+str(sparrows)
+boxplot(sparrows[,2:6])
+stars(sparrows,labels = sparrows$Survivorship)
+
+# load packages
+library(lattice)
+library(ggplot2)
+library(ggridges)
+library(ggvis)
+library(ggthemes)
+library(cowplot)
+library(gapminder)
+library(gganimate)
+library(dplyr)
+library(tidyverse)
+library(grid)
+library(gridExtra)
+library(RColorBrewer)
+
+#Plots
+sparr.birds<- data.frame(as.numeric(rownames(sparrows)),sparrows[,2:6])
+labs.diagonal <- c("Bird","Total length","Alar extent","L. beak & head","L. humerous","L. keel & sternum")
+plot(Total_length, Alar_extent,xlab="Total Length (mm)",ylab="Alar extent (nm)",pch=c(16,1))
+
+attach(sparrows)
+
+# Scatter Plot Matrix
+library(car)
+scatterplotMatrix(~Total_length+Alar_extent+L_beak_head+L_humerous+L_keel_sternum | Survivorship, data=sparr.birds, var.labels=labs.diagonal,cex.labels=0.7, diagonal="boxplot",smooth=FALSE,reg.line=FALSE,pch=c(1,16),col=rep("black",2), legend.plot=FALSE)
+
+# ggplot
+ggplot(sparrows, aes(x=L_keel_sternum,y=L_humerous)) + geom_point()
+
+ggplot(sparrows, aes(x=Alar_extent,y=Total_length)) + facet_wrap(~Survivorship) + geom_point()
+
+# bar chart
+ggplot(sparrows, aes(x=Total_length) )+ geom_bar(position="stack",fill='green')
+ggplot(sparrows, aes(x=Total_length, fill=Survivorship)) + geom_bar()+theme_bw()
+# More number of sparrows are survived who are having the Total_length between 155 and 160.
+
+# histogram
+ggplot(sparrows, aes(L_keel_sternum))+geom_histogram(bins=10)
+ggplot(sparrows, aes(L_keel_sternum))+geom_histogram(aes(fill = after_stat(count)))
+
+#regression
+ggplot(sparrows, aes(x=Total_length, y=Alar_extent)) + geom_point() + geom_smooth(method=lm)
+ggplot(sparrows, aes(x=Total_length, y=Alar_extent)) + geom_point() + stat_smooth()
+ggplot(sparrows, aes(x=Total_length, y=Alar_extent)) + geom_point() + stat_smooth()
+
+# violin plot 
+ggplot(sparrows, aes(x=Total_length,y=L_humerous)) + geom_violin()
+ggplot(sparrows, aes(x=Total_length, y=L_beak_head)) + geom_violin()
+ggplot(sparrows, aes(x=L_keel_sternum, y=L_humerous)) + geom_violin()
+
+# box plot
+ggplot(sparrows, aes(x=Survivorship, y=Total_length)) + geom_boxplot()
+ggplot(sparrows, aes(x=Survivorship, y=Total_length)) + geom_boxplot() + coord_flip()
+#Here we see that if the Total_length is higher sparrows didn't survive as compared to the sparrows with small Total_length
+
+# density plot and ggridges
+ggplot(sparrows, aes(x=L_humerous)) + geom_density() 
+
+ggplot(sparrows, aes(x=Total_length, y=Survivorship)) + geom_density_ridges() 
+
+# hexbin
+ggplot(sparrows, aes(x=Total_length, y=L_beak_head)) + geom_hex() 
+
+# with ggthemes (see also ggsci, ggthemr)
+lastplot <- ggplot(sparrows, aes(x=Total_length,y=Alar_extent)) + xlim(150,170) + geom_point(aes(color=Survivorship)) + stat_smooth() + 
+  labs(x="Total Length of Sparrow", y="Length of humerous", title="Bumpus Sparrows") 
+
+lastplot + theme_bw()
+lastplot + theme_cowplot()
+lastplot + theme_dark()
+lastplot + theme_economist()
+lastplot + theme_fivethirtyeight()
+lastplot + theme_tufte()
+lastplot + theme_wsj()
